@@ -1,0 +1,13 @@
+class Constants {
+  /*
+  Exception messages
+  */
+
+  static const String unknownError =
+      "Some Unknown Error Occurred  , Please retry . If issue still persists  , Please Mail Us";
+
+  static const String playBackError =
+      "Some Error Occurred while playing , is the file corrupted ?";
+
+  static const String filePrefix = "ophilia_a";
+}
