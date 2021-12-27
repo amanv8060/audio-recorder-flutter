@@ -1,12 +1,24 @@
+import 'dart:io';
+import 'package:audiorecorder/services/previous_recording_service.dart';
+import 'package:audiorecorder/utils/get_it/locator.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 
 class PreviousRecordingProvider extends ChangeNotifier {
-  FlutterSoundPlayer myPlayer = FlutterSoundPlayer();
+  late final PreviousRecordingService _service;
+  List<FileSystemEntity> files = [];
+
+  PreviousRecordingProvider() {
+    _service = locator<PreviousRecordingService>();
+    refreshList();
+  }
+
+  void refreshList() async {
+    files = await _service.getRecordings();
+    notifyListeners();
+  }
 
   @override
   void dispose() {
-    myPlayer.closeAudioSession();
     super.dispose();
   }
 }

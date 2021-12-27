@@ -1,4 +1,5 @@
 import 'package:audiorecorder/providers/recording_provider.dart';
+import 'package:audiorecorder/utils/ui/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,26 +11,30 @@ class PauseButton extends StatelessWidget {
     return Consumer<RecordingProvider>(builder: (context, value, child) {
       return value.locked
           ? SizedBox(
-              width: 100,
-              height: 100,
+              width: SizeConfig.fitToWidth(100),
+              height: SizeConfig.fitToHeight(100),
               child: DragTarget<bool>(
                 builder: (context, List accepted, List rejected) {
                   return IconButton(
                       onPressed: () {
-                        value.pause();
+                        value.recorder!.isPaused
+                            ? value.resume()
+                            : value.pause();
                       },
-                      icon: const Icon(Icons.pause));
+                      icon: value.recorder!.isPaused
+                          ? Icon(Icons.play_arrow)
+                          : Icon(Icons.pause));
                 },
                 onAccept: (data) {
-                  value.pause();
+                  value.recorder!.isPaused ? value.resume() : value.pause();
                 },
                 onWillAccept: (data) {
                   return true;
                 },
               ))
-          : const SizedBox(
-              width: 100,
-              height: 100,
+          : SizedBox(
+              width: SizeConfig.fitToWidth(100),
+              height: SizeConfig.fitToHeight(100),
             );
     });
   }

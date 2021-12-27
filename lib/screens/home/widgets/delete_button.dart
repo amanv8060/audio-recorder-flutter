@@ -17,12 +17,12 @@ class DeleteButton extends StatelessWidget {
                 builder: (context, List accepted, List rejected) {
                   return IconButton(
                       onPressed: () {
-                        value.stopRecorder();
+                        value.deleteRecording();
                       },
                       icon: const Icon(Icons.delete_forever));
                 },
                 onAccept: (data) {
-                  value.stopRecorder();
+                  value.deleteRecording();
                 },
                 onLeave: (data) {},
                 onWillAccept: (data) {

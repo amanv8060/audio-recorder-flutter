@@ -35,7 +35,7 @@ class RecordButton extends StatelessWidget {
         data: true,
         child: IconButton(
           onPressed: () {
-            if (value.recorder!.isRecording) {
+            if (value.recorder!.isRecording || value.recorder!.isPaused) {
               value.stopRecorder();
             } else {
               value.lockRecorder();
@@ -43,7 +43,7 @@ class RecordButton extends StatelessWidget {
             }
           },
           icon: Icon(
-              value.recorder!.isRecording
+              value.recorder!.isRecording || value.recorder!.isPaused
                   ? Icons.stop
                   : Icons.keyboard_voice_outlined,
               color: Colors.green),
