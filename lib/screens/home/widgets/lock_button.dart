@@ -12,10 +12,14 @@ class LockButton extends StatelessWidget {
       return (!value.locked && (value.recorderState == RecorderState.RECORDING))
           ? SizedBox(
               width: SizeConfig.fitToWidth(100),
-              height: SizeConfig.fitToHeight(120),
+              height: SizeConfig.fitToHeight(100),
               child: DragTarget<bool>(
                 builder: (context, List accepted, List rejected) {
-                  return const Icon(Icons.lock);
+                  return Icon(
+                    Icons.lock,
+                    color: Colors.white,
+                    size: SizeConfig.fitToWidth(48),
+                  );
                 },
                 onAccept: (data) {
                   value.lockRecorder();
@@ -25,7 +29,7 @@ class LockButton extends StatelessWidget {
                 },
               ))
           : SizedBox(
-              height: SizeConfig.fitToHeight(120),
+              height: SizeConfig.fitToHeight(100),
             );
     });
   }

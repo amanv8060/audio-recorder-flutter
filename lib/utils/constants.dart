@@ -12,4 +12,7 @@ class Constants {
   static const String filePrefix = "ophilia_a";
 
   static const int minRecordDuration = 2;
+
+  static const String noRecordings =
+      "No recordings Found \n Start a new Recording";
 }

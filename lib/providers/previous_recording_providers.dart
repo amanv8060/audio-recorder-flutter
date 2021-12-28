@@ -16,9 +16,4 @@ class PreviousRecordingProvider extends ChangeNotifier {
     files = await _service.getRecordings();
     notifyListeners();
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

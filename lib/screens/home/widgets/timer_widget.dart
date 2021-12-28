@@ -13,9 +13,13 @@ class TimerWidget extends StatelessWidget {
       builder: (context, value, _) {
         if (value.recorderState == RecorderState.RECORDING ||
             value.recorderState == RecorderState.PAUSED) {
-          return _buildTimer(value.durationRecorded);
+          return SizedBox(
+              height: SizeConfig.fitToHeight(20),
+              child: _buildTimer(value.durationRecorded));
         }
-        return const SizedBox();
+        return SizedBox(
+          height: SizeConfig.fitToHeight(20),
+        );
       },
     );
   }
@@ -24,9 +28,12 @@ class TimerWidget extends StatelessWidget {
     final String minutes = formatNumber(val ~/ 60);
     final String seconds = formatNumber(val % 60);
 
-    return Text(
-      '$minutes : $seconds',
-      style: TextStyle(color: Colors.red),
+    return FittedBox(
+      child: Text(
+        '$minutes : $seconds',
+        style:
+            TextStyle(color: Colors.red.shade400, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }

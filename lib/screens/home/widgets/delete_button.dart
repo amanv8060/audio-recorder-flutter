@@ -17,10 +17,15 @@ class DeleteButton extends StatelessWidget {
               child: DragTarget<bool>(
                 builder: (context, List accepted, List rejected) {
                   return IconButton(
+                      padding: const EdgeInsets.all(0),
+                      iconSize: SizeConfig.fitToWidth(48),
                       onPressed: () {
                         value.deleteRecording();
                       },
-                      icon: const Icon(Icons.delete_forever));
+                      icon: Icon(
+                        Icons.delete_forever,
+                        color: Colors.red.shade300,
+                      ));
                 },
                 onAccept: (data) {
                   value.deleteRecording();

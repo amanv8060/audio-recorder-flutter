@@ -24,6 +24,8 @@ dependencies:
   record: ^3.0.2
   just_audio: ^0.9.18
   logger: ^1.1.0
+  lottie: ^1.2.1
+  focused_menu: ^1.0.5
 
 dev_dependencies:
   flutter_lints: ^1.0.0
@@ -35,3 +37,6 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/anim/
+    - assets/images/

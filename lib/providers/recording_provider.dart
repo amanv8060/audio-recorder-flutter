@@ -2,15 +2,15 @@ import 'dart:async';
 import 'dart:io';
 import 'package:audiorecorder/services/recording_service.dart';
 import 'package:audiorecorder/services/timer_service.dart';
-import 'package:logger/logger.dart';
 import 'package:audiorecorder/utils/get_it/locator.dart';
-import 'package:audiorecorder/utils/logging/custom_logger.dart';
 import 'package:audiorecorder/utils/logging/info_toast.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 
+/// Maintains the current state of the recorder
+//ignore: constant_identifier_names
 enum RecorderState { RECORDING, PAUSED, IDLE }
 
 class RecordingProvider extends ChangeNotifier {
@@ -26,7 +26,7 @@ class RecordingProvider extends ChangeNotifier {
   ///stores the current state of recorder
   RecorderState recorderState = RecorderState.IDLE;
   String currentFileName = "";
-  TimerService _timerService = locator<TimerService>();
+  final TimerService _timerService = locator<TimerService>();
 
   int get durationRecorded => _timerService.recordDuration;
 
@@ -86,7 +86,7 @@ class RecordingProvider extends ChangeNotifier {
   }
 
   void deleteRecording() async {
-    String? mUrl = await recorder.stop();
+    await recorder.stop();
     File file = File(currentFileName);
     file.deleteSync();
     reset();
@@ -95,7 +95,7 @@ class RecordingProvider extends ChangeNotifier {
   }
 
   Future<void> stopRecording() async {
-    String? mUrl = await recorder.stop();
+    await recorder.stop();
     reset();
     InfoToast("Saved");
     notifyListeners();

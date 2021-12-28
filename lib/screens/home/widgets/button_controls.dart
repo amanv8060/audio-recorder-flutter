@@ -13,6 +13,7 @@ class ButtonControls extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         const TimerWidget(),
         const LockButton(),

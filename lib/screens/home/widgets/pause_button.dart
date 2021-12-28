@@ -16,14 +16,16 @@ class PauseButton extends StatelessWidget {
               child: DragTarget<bool>(
                 builder: (context, List accepted, List rejected) {
                   return IconButton(
+                      color: Colors.white,
+                      iconSize: SizeConfig.fitToWidth(48),
                       onPressed: () {
                         value.recorderState == RecorderState.PAUSED
                             ? value.resume()
                             : value.pause();
                       },
                       icon: value.recorderState == RecorderState.PAUSED
-                          ? Icon(Icons.play_arrow)
-                          : Icon(Icons.pause));
+                          ? const Icon(Icons.play_arrow)
+                          : const Icon(Icons.pause));
                 },
                 onAccept: (data) {
                   value.recorderState == RecorderState.PAUSED

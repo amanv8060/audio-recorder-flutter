@@ -2,10 +2,10 @@ import 'package:audiorecorder/providers/previous_recording_providers.dart';
 import 'package:audiorecorder/providers/recording_provider.dart';
 import 'package:audiorecorder/utils/constants.dart';
 import 'package:audiorecorder/utils/logging/custom_logger.dart';
-import 'package:audiorecorder/utils/logging/info_toast.dart';
-import 'package:audiorecorder/utils/theme/app_theme.dart';
 import 'package:audiorecorder/utils/ui/size_config.dart';
 import 'package:flutter/material.dart';
+
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class RecordButton extends StatelessWidget {
@@ -15,13 +15,10 @@ class RecordButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<RecordingProvider>(builder: (context, value, child) {
       return LongPressDraggable(
-        feedback: CircleAvatar(
-          child: Icon(
-            Icons.keyboard_voice_outlined,
-            color: Colors.white,
-            size: SizeConfig.fitToWidth(24),
-          ),
-          backgroundColor: AppTheme.primaryColor,
+        feedback: SizedBox(
+          width: SizeConfig.fitToWidth(150),
+          height: SizeConfig.fitToHeight(150),
+          child: Lottie.asset("assets/anim/waves.json", fit: BoxFit.fill),
         ),
         onDragStarted: () {
           if (!value.locked) {
@@ -29,7 +26,8 @@ class RecordButton extends StatelessWidget {
           }
         },
         childWhenDragging: SizedBox(
-          width: SizeConfig.fitToWidth(24),
+          width: SizeConfig.fitToWidth(100),
+          height: SizeConfig.fitToHeight(100),
         ),
         onDragEnd: (data) {
           CustomLogger.instance.singleLine("called");
@@ -45,8 +43,8 @@ class RecordButton extends StatelessWidget {
           }
         },
         data: true,
-        child: IconButton(
-          onPressed: () {
+        child: GestureDetector(
+          onTap: () {
             if (value.recorderState == RecorderState.RECORDING ||
                 value.recorderState == RecorderState.PAUSED) {
               value.stopRecording();
@@ -57,12 +55,23 @@ class RecordButton extends StatelessWidget {
               value.record();
             }
           },
-          icon: Icon(
-              (value.recorderState == RecorderState.RECORDING ||
+          child: SizedBox(
+            width: SizeConfig.fitToWidth(150),
+            height: SizeConfig.fitToHeight(150),
+            child: Container(
+              child: (value.recorderState == RecorderState.RECORDING ||
                       value.recorderState == RecorderState.PAUSED)
-                  ? Icons.stop
-                  : Icons.keyboard_voice_outlined,
-              color: Colors.green),
+                  ? Lottie.asset("assets/anim/waves.json",
+                      width: SizeConfig.fitToWidth(48),
+                      height: SizeConfig.fitToHeight(48),
+                      fit: BoxFit.fill)
+                  : Icon(
+                      Icons.keyboard_voice_outlined,
+                      color: Colors.white,
+                      size: SizeConfig.fitToWidth(48),
+                    ),
+            ),
+          ),
         ),
       );
     });
