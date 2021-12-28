@@ -14,7 +14,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-  flutter_sound: ^8.4.2
   fluttertoast: ^8.0.8
   get_it: ^7.2.0
   intl: ^0.17.0
@@ -22,6 +21,9 @@ dependencies:
   path_provider: ^2.0.8
   permission_handler: ^8.3.0
   provider: ^6.0.1
+  record: ^3.0.2
+  just_audio: ^0.9.18
+  logger: ^1.1.0
 
 dev_dependencies:
   flutter_lints: ^1.0.0

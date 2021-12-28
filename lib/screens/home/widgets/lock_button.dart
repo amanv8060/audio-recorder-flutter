@@ -9,7 +9,7 @@ class LockButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<RecordingProvider>(builder: (context, value, child) {
-      return !value.locked && value.recorder!.isRecording
+      return (!value.locked && (value.recorderState == RecorderState.RECORDING))
           ? SizedBox(
               width: SizeConfig.fitToWidth(100),
               height: SizeConfig.fitToHeight(120),
@@ -24,7 +24,9 @@ class LockButton extends StatelessWidget {
                   return true;
                 },
               ))
-          : const SizedBox();
+          : SizedBox(
+              height: SizeConfig.fitToHeight(120),
+            );
     });
   }
 }

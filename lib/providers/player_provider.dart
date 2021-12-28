@@ -1,65 +1,48 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:audiorecorder/utils/logging/custom_logger.dart';
+import 'package:audiorecorder/services/player_service.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_sound/flutter_sound.dart';
-
-import 'package:logger/logger.dart';
+import 'package:just_audio/just_audio.dart';
 
 class PlayerProvider extends ChangeNotifier {
-  FlutterSoundPlayer player = FlutterSoundPlayer(logLevel: Level.error);
+  final PlayerService _playerService = PlayerService();
   FileSystemEntity file;
-  String duration = "Fetching duration";
 
-  late Stream<PlaybackDisposition>? playerSubscription;
+  AudioPlayer get audioPlayer => _playerService.audioPlayer;
+
+  Duration? get fileLength => _playerService.duration;
+
+  Stream<Duration> get positionStream => _playerService.playerPositionStream;
+
+  Stream<Duration?> get durationStream => _playerService.playerDurationStream;
 
   PlayerProvider(this.file) {
-    player.openAudioSession(focus: AudioFocus.requestFocusAndDuckOthers);
-    player.setSubscriptionDuration(const Duration(milliseconds: 500));
-    playerSubscription = player.onProgress;
-    fetchDuration();
-  }
-
-  void fetchDuration() async {
-    var data = (await FlutterSoundFFprobe().getMediaInformation(file.path))
-        .getMediaProperties();
-    if (data == null || data["duration"] == null) {
-      duration = "Unable to fetch Length";
-    } else {
-      double val = double.parse(data["duration"]);
-      duration = "${val ~/ 60}m:${(val % 60).toInt()}s";
-    }
-    notifyListeners();
-  }
-
-  void resume() async {
-    await player.resumePlayer();
-    notifyListeners();
+    _playerService.setSource(file.path);
+    durationStream.listen((event) {
+      notifyListeners();
+    });
   }
 
   void play() async {
-    if (player.isPaused) {
-      resume();
-      return;
-    }
-    if (player.isPlaying) {
-      pause();
-      return;
-    }
-    await player.startPlayer(fromURI: file.path);
+    HapticFeedback.vibrate();
+    await _playerService.play();
+    notifyListeners();
+  }
+
+  void stop() async {
+    await _playerService.stop();
     notifyListeners();
   }
 
   void pause() async {
-    if (player.isPlaying) {
-      await player.pausePlayer();
-    }
+    await _playerService.pause();
     notifyListeners();
   }
 
   @override
   void dispose() {
-    player.closeAudioSession();
+    _playerService.dispose();
     super.dispose();
   }
 }

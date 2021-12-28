@@ -1,7 +1,8 @@
 import 'package:audiorecorder/providers/previous_recording_providers.dart';
-import 'package:audiorecorder/screens/home/widgets/audio_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'audio_card.dart';
 
 class AudioList extends StatelessWidget {
   const AudioList({Key? key}) : super(key: key);

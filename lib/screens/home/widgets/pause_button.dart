@@ -17,16 +17,18 @@ class PauseButton extends StatelessWidget {
                 builder: (context, List accepted, List rejected) {
                   return IconButton(
                       onPressed: () {
-                        value.recorder!.isPaused
+                        value.recorderState == RecorderState.PAUSED
                             ? value.resume()
                             : value.pause();
                       },
-                      icon: value.recorder!.isPaused
+                      icon: value.recorderState == RecorderState.PAUSED
                           ? Icon(Icons.play_arrow)
                           : Icon(Icons.pause));
                 },
                 onAccept: (data) {
-                  value.recorder!.isPaused ? value.resume() : value.pause();
+                  value.recorderState == RecorderState.PAUSED
+                      ? value.resume()
+                      : value.pause();
                 },
                 onWillAccept: (data) {
                   return true;

@@ -1,23 +1,34 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:audiorecorder/services/recording_service.dart';
+import 'package:audiorecorder/services/timer_service.dart';
 import 'package:logger/logger.dart';
 import 'package:audiorecorder/utils/get_it/locator.dart';
 import 'package:audiorecorder/utils/logging/custom_logger.dart';
 import 'package:audiorecorder/utils/logging/info_toast.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+
 import 'package:permission_handler/permission_handler.dart';
+import 'package:record/record.dart';
+
+enum RecorderState { RECORDING, PAUSED, IDLE }
 
 class RecordingProvider extends ChangeNotifier {
   /// Permission for recording
   bool microphonePermission = false;
+
+  ///holds
   bool locked = false;
   bool initDone = false;
-  FlutterSoundRecorder? recorder = FlutterSoundRecorder(logLevel: Level.info);
-  final Codec _codec = Codec.aacADTS;
-  String path = "";
+
+  Record recorder = Record();
+
+  ///stores the current state of recorder
+  RecorderState recorderState = RecorderState.IDLE;
   String currentFileName = "";
+  TimerService _timerService = locator<TimerService>();
+
+  int get durationRecorded => _timerService.recordDuration;
 
   RecordingProvider() {
     init();
@@ -26,6 +37,9 @@ class RecordingProvider extends ChangeNotifier {
   /// Notify listeners explicitly after calling this function
   reset() {
     locked = false;
+    recorderState = RecorderState.IDLE;
+    currentFileName = "";
+    _timerService.reset();
   }
 
   Future<void> init() async {
@@ -34,38 +48,35 @@ class RecordingProvider extends ChangeNotifier {
       microphonePermission = false;
     } else {
       microphonePermission = true;
-      recorder = await recorder?.openAudioSession();
-      recorder?.setSubscriptionDuration(const Duration(milliseconds: 100));
     }
+    _timerService.reset();
     initDone = true;
     notifyListeners();
   }
 
   void record() async {
-    if (recorder == null) {
-      InfoToast("Some Error while Initializing , reinitializing");
-      reset();
-      await init();
-    }
     currentFileName = await locator<RecordingService>().getFilePath();
-    await recorder!.startRecorder(codec: _codec, toFile: currentFileName);
+    await recorder.start(path: currentFileName);
+    recorderState = RecorderState.RECORDING;
+    _timerService.start(() {
+      notifyListeners();
+    });
     notifyListeners();
   }
 
   void resume() async {
-    if (recorder!.isPaused) {
-      await recorder!.resumeRecorder();
+    await recorder.resume();
+    _timerService.start(() {
       notifyListeners();
-    }
+    });
+    recorderState = RecorderState.RECORDING;
+    notifyListeners();
   }
 
   void pause() async {
-    //sanity check to only pause if not paused
-    if (recorder!.isStopped || recorder!.isPaused) {
-      notifyListeners();
-      return;
-    }
-    await recorder!.pauseRecorder();
+    await recorder.pause();
+    recorderState = RecorderState.PAUSED;
+    _timerService.stop();
     notifyListeners();
   }
 
@@ -74,19 +85,25 @@ class RecordingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  deleteRecording() async {
-    String? mUrl = await recorder!.stopRecorder();
-    CustomLogger.instance.singleLine(mUrl);
+  void deleteRecording() async {
+    String? mUrl = await recorder.stop();
     File file = File(currentFileName);
     file.deleteSync();
     reset();
+    InfoToast("Discarded");
     notifyListeners();
   }
 
-  Future<void> stopRecorder() async {
-    String? mUrl = await recorder?.stopRecorder();
-    CustomLogger.instance.singleLine(mUrl);
+  Future<void> stopRecording() async {
+    String? mUrl = await recorder.stop();
     reset();
+    InfoToast("Saved");
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _timerService.dispose();
+    super.dispose();
   }
 }

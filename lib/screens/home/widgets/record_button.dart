@@ -1,4 +1,8 @@
+import 'package:audiorecorder/providers/previous_recording_providers.dart';
 import 'package:audiorecorder/providers/recording_provider.dart';
+import 'package:audiorecorder/utils/constants.dart';
+import 'package:audiorecorder/utils/logging/custom_logger.dart';
+import 'package:audiorecorder/utils/logging/info_toast.dart';
 import 'package:audiorecorder/utils/theme/app_theme.dart';
 import 'package:audiorecorder/utils/ui/size_config.dart';
 import 'package:flutter/material.dart';
@@ -20,30 +24,42 @@ class RecordButton extends StatelessWidget {
           backgroundColor: AppTheme.primaryColor,
         ),
         onDragStarted: () {
-          value.record();
+          if (!value.locked) {
+            value.record();
+          }
         },
         childWhenDragging: SizedBox(
           width: SizeConfig.fitToWidth(24),
         ),
         onDragEnd: (data) {
-          //handle logic for short upload
-          // if (!locked)
-          //   setState(() {
-          //     recording = false;
-          //   });
+          CustomLogger.instance.singleLine("called");
+          // handle logic for short upload
+          if (!value.locked) {
+            if (value.durationRecorded < Constants.minRecordDuration) {
+              value.deleteRecording();
+            } else {
+              value.stopRecording();
+              Provider.of<PreviousRecordingProvider>(context, listen: false)
+                  .refreshList();
+            }
+          }
         },
         data: true,
         child: IconButton(
           onPressed: () {
-            if (value.recorder!.isRecording || value.recorder!.isPaused) {
-              value.stopRecorder();
+            if (value.recorderState == RecorderState.RECORDING ||
+                value.recorderState == RecorderState.PAUSED) {
+              value.stopRecording();
+              Provider.of<PreviousRecordingProvider>(context, listen: false)
+                  .refreshList();
             } else {
               value.lockRecorder();
               value.record();
             }
           },
           icon: Icon(
-              value.recorder!.isRecording || value.recorder!.isPaused
+              (value.recorderState == RecorderState.RECORDING ||
+                      value.recorderState == RecorderState.PAUSED)
                   ? Icons.stop
                   : Icons.keyboard_voice_outlined,
               color: Colors.green),

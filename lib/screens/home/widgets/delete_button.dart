@@ -9,7 +9,8 @@ class DeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<RecordingProvider>(builder: (context, value, child) {
-      return (value.recorder!.isPaused || value.recorder!.isRecording)
+      return (value.recorderState == RecorderState.PAUSED ||
+              value.recorderState == RecorderState.RECORDING)
           ? SizedBox(
               width: SizeConfig.fitToWidth(100),
               height: SizeConfig.fitToHeight(100),

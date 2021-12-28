@@ -10,4 +10,6 @@ class Constants {
       "Some Error Occurred while playing , is the file corrupted ?";
 
   static const String filePrefix = "ophilia_a";
+
+  static const int minRecordDuration = 2;
 }
