@@ -5,6 +5,8 @@ import 'package:audiorecorder/utils/logging/custom_logger.dart';
 import 'package:path_provider/path_provider.dart';
 
 class RecordingService {
+
+  /// Get the file path for a  new file based on current time
   Future<String> getFilePath() async {
     Directory directory = await getApplicationDocumentsDirectory();
     CustomLogger.instance.singleLine(directory.path);

@@ -11,7 +11,7 @@ class PreviousRecordingService {
     temp.removeWhere((element) =>
         !path.basename(element.path).contains(Constants.filePrefix));
 
-    //comparing  basename and sorting , beacause these have common prefix and
+    //comparing  basename and sorting , because these have common prefix and
     //extension , and unique identifier is name which will always increase
     temp.sort((a, b) => path.basename(b.path).compareTo(path.basename(a.path)));
     return temp;

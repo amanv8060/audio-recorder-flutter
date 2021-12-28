@@ -11,6 +11,7 @@ class Constants {
 
   static const String filePrefix = "ophilia_a";
 
+  /// Minimum value for a recording to be considered valid (in sec)
   static const int minRecordDuration = 2;
 
   static const String noRecordings =

@@ -1,16 +1,85 @@
-# audiorecorder
+# Flutter Audio Recorder 
 
-A new Flutter project.
+A Simple audio recorder written in FLutter .
 
-## Getting Started
+Basic Features
+1. Audio recording - long press for quick record, and press/hold and  swipe up  to record longer audios.
 
-This project is a starting point for a Flutter application.
+2. Recorded audios to be shown in chat bubble, that can be played there itself by clicking the play button.
 
-A few resources to get you started if this is your first Flutter project:
+3. Multiple audio chat bubbles can be added if audio is recorded multiple times.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+4. Delete previously recorded audios
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+## Run it 
+
+- Download apk from releases 
+
+or you can buiild it
+
+1. Clone repo `git clone https://github.com/amanv8060/audio-recorder-flutter`
+2. cd audio-recorder-flutter
+3. run `flutter pub get`
+4. run `flutter run`
+
+
+### Proeject Structure
+
+📦lib
+ ┣ 📂providers
+ ┃ ┣ 📜player_provider.dart
+ ┃ ┣ 📜previous_recording_providers.dart
+ ┃ ┗ 📜recording_provider.dart
+ ┣ 📂screens
+ ┃ ┗ 📂home
+ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┣ 📜audio_card.dart
+ ┃ ┃ ┃ ┣ 📜audio_list.dart
+ ┃ ┃ ┃ ┣ 📜button_controls.dart
+ ┃ ┃ ┃ ┣ 📜custom_app_bar.dart
+ ┃ ┃ ┃ ┣ 📜delete_button.dart
+ ┃ ┃ ┃ ┣ 📜lock_button.dart
+ ┃ ┃ ┃ ┣ 📜no_permission.dart
+ ┃ ┃ ┃ ┣ 📜pause_button.dart
+ ┃ ┃ ┃ ┣ 📜record_button.dart
+ ┃ ┃ ┃ ┗ 📜timer_widget.dart
+ ┃ ┃ ┗ 📜home_screen.dart
+ ┣ 📂services
+ ┃ ┣ 📜previous_recording_service.dart
+ ┃ ┣ 📜recording_service.dart
+ ┃ ┗ 📜timer_service.dart
+ ┣ 📂utils
+ ┃ ┣ 📂functions
+ ┃ ┃ ┣ 📜datetime_from_filename.dart
+ ┃ ┃ ┗ 📜format_number.dart
+ ┃ ┣ 📂get_it
+ ┃ ┃ ┗ 📜locator.dart
+ ┃ ┣ 📂logging
+ ┃ ┃ ┣ 📜custom_logger.dart
+ ┃ ┃ ┗ 📜info_toast.dart
+ ┃ ┣ 📂theme
+ ┃ ┃ ┗ 📜app_theme.dart
+ ┃ ┣ 📂ui
+ ┃ ┃ ┗ 📜size_config.dart
+ ┃ ┗ 📜constants.dart
+ ┣ 📜generated_plugin_registrant.dart
+ ┗ 📜main.dart
+
+## Packages that it depends upon and their primary use cases
+- fluttertoast: `Show informative toast`
+- get_it: `Create singletons`
+- intl: `Formatting Date`
+- path: `Utilities for working on path`
+- path_provider: `Accessing applications path`
+- permission_handler: `Managing Permission`
+- provider:`Mangaing State`
+- record:`Recording audio`
+- just_audio: `Playing audio`
+- logger: `For logging`
+- lottie:`Showinfg lottie animation`
+- focused_menu:`Focusing a tile and showing a context menu`
+
+
+This codebase contains boilerplate code from packages examples.
